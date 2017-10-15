@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="tableSett" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="tableSett" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="tableSett" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>&lt;!&ndash;>
+<html lang="en" ng-app="tableSett" class="no-js"> <!--<![endif]-->
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Список настроек для ControlRoom</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+<div ng-app="tableSett" ng-controller="customersCtrl">
+    <h2 style="color: #2e6c80; text-align: center;">Список девайсов для php запросов:</h2>
+
+    <table class="greyGridTable">
+        <thead>
+        <th>Ключ</th>
+        <th>Описание</th>
+        <th>Значение</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="x in sett_json.devs_for_php" ng-include="getTemplate(x, 'devs_php')"><tr>
+        </tbody>
+        <script type="text/ng-template" id="display_devs_php">
+            <td style="width: 10%">{{ x.key }}</td>
+            <td style="width: 40%">{{ x.descr }}</td>
+            <td style="width: 40%">{{ x.value }}</td>
+            <td style="width: 10%">
+                <button ng-click="editValue(x)">Изменить</button>
+            </td>
+        </script>
+        <script type="text/ng-template" id="edit_devs_php">
+            <td class="xkey">{{ x.key }}</td>
+            <td>{{ x.descr }}</td>
+            <td><input style="width: 100%" type="text" ng-model="sett_json.selected.value" /></td>
+            <td class="xbutt">
+                <button ng-click="saveValue(x.ident,$index)">Сохранить</button>
+                <button ng-click="reset(x)">Отмена</button>
+            </td>
+        </script>
+    </table>
+
+    <h2 style="color: #2e6c80; text-align: center;">Список хостов для REST или WS:</h2>
+
+    <table class="greyGridTable">
+        <thead>
+        <th>Ключ</th>
+        <th>Описание</th>
+        <th>Значение</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="x in sett_json.ws_rest_hosts" ng-include="getTemplate(x,  'hosts')"><tr>
+        </tbody>
+        <script type="text/ng-template" id="display_hosts">
+            <td style="width: 10%">{{ x.key }}</td>
+            <td style="width: 40%">{{ x.descr }}</td>
+            <td style="width: 40%">{{ x.value }}</td>
+            <td style="width: 10%">
+                <button ng-click="editValue(x)">Изменить</button>
+            </td>
+        </script>
+        <script type="text/ng-template" id="edit_hosts">
+            <td class="xkey">{{ x.key }}</td>
+            <td>{{ x.descr }}</td>
+            <td><input style="width: 100%" type="text" ng-model="sett_json.selected.value" /></td>
+            <td class="xbutt">
+                <button ng-click="saveValue(x.ident,$index)">Сохранить</button>
+                <button ng-click="reset(x)">Отмена</button>
+            </td>
+        </script>
+    </table>
+</div>
+
+<script src="bower_components/angular/angular.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
