@@ -7,8 +7,9 @@ app.controller('customersCtrl', function($scope, $http) {
 
     $scope.getTemplate = function(inpsett, inptable) {
         var sel_key = $scope.sett_json.selected.key;
+        var sel_ident = $scope.sett_json.selected.ident;
 
-        if (inpsett.key === sel_key)
+        if (inpsett.key === sel_key && inpsett.ident === sel_ident)
             return 'edit' + "_" + inptable;
         else
             return 'display' + "_" + inptable;
