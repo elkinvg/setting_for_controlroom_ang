@@ -84,6 +84,14 @@
             </td>
         </script>
     </table>
+
+    <h2 style="color: #2e6c80; text-align: center;">Проверка дополнительных компонентов</h2>
+
+    <ul>
+        <li ng-repeat=" x in sql_table" >
+            <p class="comps{{x.class}}">{{x.text}}</p>
+        </li>
+    </ul>
 </div>
 
 <script src="bower_components/angular/angular.js"></script>

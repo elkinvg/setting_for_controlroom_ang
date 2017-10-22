@@ -32,3 +32,15 @@ table.greyGridTable thead th:first-child {
 table.greyGridTable tfoot td {
   font-size: 14px;
 }
+
+p.comps_y {
+  font-size: 18px;
+  font-weight: bold;
+  color: #201faf;
+}
+
+p.comps_n {
+  font-size: 18px;
+  font-weight: bold;
+  color: #922028;
+}

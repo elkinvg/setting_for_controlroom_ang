@@ -2,10 +2,11 @@
 
 var app = angular.module('tableSett', []);
 
-app.controller('customersCtrl', function($scope, $http) {
+app.controller('customersCtrl', function ($scope, $http) {
     get_data();
+    for_check_tables();
 
-    $scope.getTemplate = function(inpsett, inptable) {
+    $scope.getTemplate = function (inpsett, inptable) {
         var sel_key = $scope.sett_json.selected.key;
         var sel_ident = $scope.sett_json.selected.ident;
 
@@ -15,36 +16,35 @@ app.controller('customersCtrl', function($scope, $http) {
             return 'display' + "_" + inptable;
     };
 
-    $scope.editValue = function(value) {
+    $scope.editValue = function (value) {
         $scope.sett_json.selected = angular.copy(value);
     };
 
-    $scope.saveValue = function(idendt, idx) {
+    $scope.saveValue = function (idendt, idx) {
         var for_save = angular.copy($scope.sett_json.selected);
         var jsonout = angular.toJson(for_save);
 
         $http.get("/cr_conf/scripts/settings_for_cr.php",
-            {params: {type_req: "update",json_for_upd: jsonout}})
+            {params: {type_req: "update", json_for_upd: jsonout}})
             .then(
-            function (response) {
-                if (response.data.success === true) {
-                    get_data();
+                function (response) {
+                    if (response.data.success === true) {
+                        get_data();
+                    }
+                },
+                function (response) {
+                    errorOut(response);
                 }
-            },
-            function (response) {
-                errorOut(response);
-            }
-        );
+            );
     };
 
-    $scope.reset = function(value) {
+    $scope.reset = function (value) {
         $scope.sett_json.selected = {};
     };
 
     function errorOut(response) {
-        out = undefined;
-        if (response.data !== undefined)
-        {
+        var out = undefined;
+        if (response.data !== undefined) {
             var out = response.data.err_mess;
         }
 
@@ -53,8 +53,8 @@ app.controller('customersCtrl', function($scope, $http) {
 
         var wrappedResult = angular.element(document.querySelector('#errorout'));
         var questHeader = wrappedResult.find('h1');
-        questHeader.css("color","#ff0000");
-        questHeader.css("text-align","center");
+        questHeader.css("color", "#ff0000");
+        questHeader.css("text-align", "center");
         questHeader.text(out);
         //wrappedResult.css( "display", "none" );
         //wrappedResult.css( "display", "inline" );
@@ -74,8 +74,7 @@ app.controller('customersCtrl', function($scope, $http) {
                     function init_sett_json(key) {
                         $scope.sett_json[key] = response.data[key];
                         $scope.sett_json[key].selected = {};
-                        angular.forEach($scope.sett_json[key], function(value)
-                        {
+                        angular.forEach($scope.sett_json[key], function (value) {
                             value.ident = key;
                         });
                     }
@@ -84,6 +83,36 @@ app.controller('customersCtrl', function($scope, $http) {
                     errorOut(response);
                 });
     }
+
+    function for_check_tables() {
+        $http.get("/cr_conf/scripts/settings_for_cr.php",
+            {params: {type_req: "check_tables"}})
+            .then(function (response) {
+                    $scope.sql_table = [];
+                    var data = response.data;
+
+                    angular.forEach(response.data, function(has, tablename) {
+                        var inpobj = {};
+                        var text = "Таблица ";
+                        if (has) {
+
+                            inpobj["class"] = "_y";
+                            text+=( tablename + " присутствует в БД" );
+                        }
+                        else {
+                            inpobj["class"] = "_n";
+                            text+=( tablename + " не найдена в БД" );
+                        }
+                        inpobj["text"] = text;
+                        $scope.sql_table.push(inpobj);
+
+                    });
+                },
+                function (response) {
+                    errorOut(response);
+                });
+    }
+
 });
 
 
